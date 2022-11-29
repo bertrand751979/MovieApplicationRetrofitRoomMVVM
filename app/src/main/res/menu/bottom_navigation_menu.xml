@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_display_movies"
+        android:title="Film"
+        android:icon="@drawable/ic_movie"
+        ></item>
+    <item android:id="@+id/nav_display_favory"
+        android:title="Mes Favoris"
+        android:icon="@drawable/ic_favorite"
+        ></item>
+
+</menu>

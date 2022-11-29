@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/search_year"
+        android:text="RECHERCHER"
+        android:gravity="center"
+        android:textSize="23sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/txt_your_search"
+        android:layout_marginTop="65dp"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:hint="ZONE DE SAISIE"
+        android:imeOptions="actionDone" />
+
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnValidez"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
+            android:textSize="9sp"
+            android:text="VALIDEZ"/>
+
+        <Button
+            android:id="@+id/btnAnnulez"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="9sp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="ANNULEZ"/>
+    </LinearLayout>
+</LinearLayout>
