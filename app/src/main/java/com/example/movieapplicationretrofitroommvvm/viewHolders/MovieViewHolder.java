@@ -19,7 +19,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     private TextView  vhMovieOverview;
     private LinearLayout linearLayout;
 
-
     public MovieViewHolder(@NonNull View view) {
         super(view);
         vhMoviePoster = view.findViewById(R.id.raw_poster);
@@ -28,9 +27,7 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
         linearLayout = view.findViewById(R.id.raw_linear_movie);
     }
 
-    public ImageView getVhMoviePoster() {
-        return vhMoviePoster;
-    }
+    public ImageView getVhMoviePoster() {return vhMoviePoster;}
 
     public void setVhMoviePoster(ImageView vhMoviePoster) {
         this.vhMoviePoster = vhMoviePoster;
@@ -55,7 +52,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout getLinearLayout() {
         return linearLayout;
     }
-
     public void setLinearLayout(LinearLayout linearLayout) {
         this.linearLayout = linearLayout;
     }

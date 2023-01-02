@@ -109,7 +109,6 @@ public class RepositoryMovie {
         });
     }
 
-
     public void addToListFavorite(Result result, Context context){
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -123,13 +122,11 @@ public class RepositoryMovie {
         int pos =0;
         for(ResultVideo resultVideo1 :RepositoryMovie.getInstance().videoList) {
             if(resultVideo1.getSite().equalsIgnoreCase(variable)){
-                pos+=pos;
-                resultVideo1.getId();
-
+                //pos+=pos;
+                ///resultVideo1.setPosition(pos);
                 Log.d("id",resultVideo1.getId());
                 hyperLink= "https://www.youtube.com/watch?v="+resultVideo1.getKey();
                 Log.d("pos", String.valueOf(pos));
-
             }
         }
 

@@ -78,14 +78,4 @@ public class MyAlertDialogFragment extends DialogFragment {
     public void setInterfaceEditTextDialog(InterfaceEditTextDialog interfaceEditTextDialog) {
         this.interfaceEditTextDialog = interfaceEditTextDialog;
     }
-
-
-
-
-
-
-
-
-
-
 }

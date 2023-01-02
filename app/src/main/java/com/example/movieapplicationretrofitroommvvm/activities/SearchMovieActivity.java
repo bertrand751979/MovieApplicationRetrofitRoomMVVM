@@ -35,7 +35,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     private Button btnSearch;
     private EditText editTextSearch;
     public static String MOVIE_EXTRA = "movie_extra";
-    public static String VIDEO_EXTRA = "video_extra";
+    //public static String VIDEO_EXTRA = "video_extra";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

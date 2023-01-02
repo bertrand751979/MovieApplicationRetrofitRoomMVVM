@@ -13,7 +13,6 @@ import com.example.movieapplicationretrofitroommvvm.repository.RepositoryMovie;
 public class VideoActivity extends AppCompatActivity {
     private WebView webVideo;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

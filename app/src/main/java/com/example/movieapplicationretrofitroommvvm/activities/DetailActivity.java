@@ -115,7 +115,6 @@ public class DetailActivity extends AppCompatActivity {
         if ((response.body().getResults() != null)&&(response.body().getResults().size()>0)){
             RepositoryMovie.getInstance().videoList = (ArrayList<ResultVideo>) response.body().getResults();
             Toast.makeText(this, "Taille de List Result OK", Toast.LENGTH_SHORT).show();
-
         } else {
             Toast.makeText(this, "Result null", Toast.LENGTH_SHORT).show();
         }
