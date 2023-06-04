@@ -55,7 +55,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     public void setLinearLayout(LinearLayout linearLayout) {
         this.linearLayout = linearLayout;
     }
-
     public void bind (Result result, OnLinearClickedAction onLinearClickedAction){
         String photo = "https://image.tmdb.org/t/p/w500"+result.getPoster_path();
        if (photo==null){

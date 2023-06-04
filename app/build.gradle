@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -47,4 +48,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.4.0'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //FIREBASE
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    //FIREBASE UI
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
+    //EASY PERMISSION
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
+    implementation 'com.google.firebase:firebase-analytics'
 }

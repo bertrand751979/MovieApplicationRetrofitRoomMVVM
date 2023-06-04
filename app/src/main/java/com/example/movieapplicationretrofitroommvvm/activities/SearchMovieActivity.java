@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class SearchMovieActivity extends AppCompatActivity {
     private Button btnSearch;
-    private EditText editTextSearch;
+    public  EditText editTextSearch;
     public static String MOVIE_EXTRA = "movie_extra";
     //public static String VIDEO_EXTRA = "video_extra";
 

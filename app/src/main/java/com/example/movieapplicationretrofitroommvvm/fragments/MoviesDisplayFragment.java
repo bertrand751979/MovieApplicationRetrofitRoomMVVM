@@ -49,6 +49,7 @@ public class MoviesDisplayFragment extends Fragment {
         movieDisplayFragmentViewModel = new ViewModelProvider(this).get(MovieDisplayFragmentViewModel.class);
         getActivity().setTitle("Films: ");
         test= RepositoryMovie.getInstance().getListMovie();
+
     }
 
     @Nullable
@@ -56,6 +57,8 @@ public class MoviesDisplayFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_display_movie,container,false);
+
+
     }
 
     @Override

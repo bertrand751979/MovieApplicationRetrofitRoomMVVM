@@ -1,14 +1,25 @@
 package com.example.movieapplicationretrofitroommvvm.repository;
 
+import static android.content.ContentValues.TAG;
+import static com.example.movieapplicationretrofitroommvvm.activities.DetailActivity.db;
+
 import android.content.Context;
 import android.util.Log;
+import android.widget.Adapter;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.example.movieapplicationretrofitroommvvm.ApplicationDatabase;
-import com.example.movieapplicationretrofitroommvvm.model.Images;
 import com.example.movieapplicationretrofitroommvvm.model.Result;
 import com.example.movieapplicationretrofitroommvvm.model.ResultVideo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +28,16 @@ import java.util.concurrent.Executors;
 public class RepositoryMovie {
     public ArrayList<Result> listMovie = new ArrayList<>();
     public ArrayList<Result> listFavorite = new ArrayList<>();
+    public ArrayList<Result> listFavorite2 = new ArrayList<>();
+
     public ArrayList<Result> mySearchList = new ArrayList<>();
     public ArrayList<Result> recipeAlreadyFavory = new ArrayList<>();
     public ArrayList<ResultVideo> videoList = new ArrayList<>();
     public String hyperLink = "";
+
+    private static final String COLLECTION_NAME = "results";
+    private static final String FAVORITEMOVIE= "favorite_movie";
+
 
     private RepositoryMovie(){}
     private static RepositoryMovie INSTANCE = null;
@@ -53,6 +70,14 @@ public class RepositoryMovie {
 
     public void setListFavorite(ArrayList<Result> listFavorite) {
         this.listFavorite = listFavorite;
+    }
+
+    public ArrayList<Result> getListFavorite2() {
+        return listFavorite2;
+    }
+
+    public void setListFavorite2(ArrayList<Result> listFavorite2) {
+        this.listFavorite2 = listFavorite2;
     }
 
     public String getHyperLink() {
@@ -133,6 +158,38 @@ public class RepositoryMovie {
         return hyperLink;
     }
 
+
+    public CollectionReference getResultCollection(){
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+
+    public void toGetFavList(Adapter adapter){
+        db.collection("results")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Result result = new Result();
+                                //c'est l'id tjrs type string de l'enregistrement firestore
+                                result.setDocumentId(document.getId());
+                                Log.d("rang",document.getId());
+                                //l'id de l'objet result int est dans le data
+                                result.setPoster_path((String) document.getData().get("poster_path"));
+                                result.setOverview((String) document.getData().get("overview"));
+                                result.setOriginal_title((String) document.getData().get("original_title"));
+                                RepositoryMovie.getInstance().listFavorite.add(result);
+                            }
+                            //Toast.makeText(getContext(), "size get listFav : "+RepositoryMovie.getInstance().listFavorite.size(), Toast.LENGTH_SHORT).show();
+                            //adapter.setListFavoryAdapter(RepositoryMovie.getInstance().listFavorite);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+
+                });
+    }
 
 
 

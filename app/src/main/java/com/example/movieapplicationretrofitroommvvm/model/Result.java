@@ -3,6 +3,9 @@ package com.example.movieapplicationretrofitroommvvm.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 @Entity
@@ -22,8 +25,12 @@ public class Result implements Serializable {
     public boolean video;
     public double vote_average;
     public int vote_count;
+    private String documentId;
+    private boolean isFavorite;
+    //public DocumentReference queryId;
 
-    public Result(boolean adult, String backdrop_path, int id, String original_language, String original_title, String overview, double popularity, String poster_path, String release_date, String title, boolean video, double vote_average, int vote_count) {
+    public Result(){}
+    public Result(boolean adult, String backdrop_path, int id, String original_language, String original_title, String overview, double popularity, String poster_path, String release_date, String title, boolean video, double vote_average, int vote_count ) {
         this.adult = adult;
         this.backdrop_path = backdrop_path;
         //this.genre_ids = genre_ids;
@@ -38,6 +45,16 @@ public class Result implements Serializable {
         this.video = video;
         this.vote_average = vote_average;
         this.vote_count = vote_count;
+        this.isFavorite = isFavorite;
+        //this.queryId = queryId;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public boolean isAdult() {
@@ -78,6 +95,22 @@ public class Result implements Serializable {
 
     public void setOriginal_language(String original_language) {
         this.original_language = original_language;
+    }
+
+   /* public DocumentReference getQueryId() {
+        return queryId;
+    }
+
+    public void setQueryId(DocumentReference queryId) {
+        this.queryId = queryId;
+    }*/
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public String getOriginal_title() {
@@ -151,4 +184,5 @@ public class Result implements Serializable {
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
     }
+
 }

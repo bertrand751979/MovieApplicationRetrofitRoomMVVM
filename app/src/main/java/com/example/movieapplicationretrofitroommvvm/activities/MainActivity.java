@@ -40,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MoviesDisplayFragment()).commit();
-
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         bottomNav.setSelectedItemId(R.id.nav_display_movies);
     }
+
+
+
 }

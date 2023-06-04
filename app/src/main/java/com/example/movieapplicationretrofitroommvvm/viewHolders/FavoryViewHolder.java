@@ -14,6 +14,7 @@ import com.example.movieapplicationretrofitroommvvm.OnImgDeleteClickedAction;
 import com.example.movieapplicationretrofitroommvvm.OnLinearClickedAction;
 import com.example.movieapplicationretrofitroommvvm.R;
 import com.example.movieapplicationretrofitroommvvm.model.Result;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class FavoryViewHolder extends RecyclerView.ViewHolder {
     private ImageView vhFavoryMoviePoster;
@@ -67,6 +68,7 @@ public class FavoryViewHolder extends RecyclerView.ViewHolder {
     public void bind(Result result, OnLinearClickedAction onLinearClickedAction, OnImgDeleteClickedAction onImgDeleteClickedAction) {
         String photo = "https://image.tmdb.org/t/p/w500" + result.getPoster_path();
 
+
             Glide.with(vhFavoryMoviePoster.getContext())
                     .load(photo)
                     .error(R.drawable.ic_movie)
@@ -77,6 +79,10 @@ public class FavoryViewHolder extends RecyclerView.ViewHolder {
         Log.d("img", (photo));
         vhFavoryMovieTitle.setText(result.getOriginal_title());
         vhFavoryMovieOverview.setText(result.getOverview());
+
+
+
+
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,4 +96,8 @@ public class FavoryViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
+
+
+
+
 }

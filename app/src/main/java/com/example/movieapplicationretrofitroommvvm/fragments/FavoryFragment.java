@@ -1,24 +1,24 @@
 package com.example.movieapplicationretrofitroommvvm.fragments;
 
+import static android.content.ContentValues.TAG;
+import static com.example.movieapplicationretrofitroommvvm.activities.DetailActivity.db;
 import static com.example.movieapplicationretrofitroommvvm.activities.SearchMovieActivity.MOVIE_EXTRA;
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.TypeConverters;
 
 import com.example.movieapplicationretrofitroommvvm.OnImgDeleteClickedAction;
 import com.example.movieapplicationretrofitroommvvm.OnLinearClickedAction;
@@ -27,23 +27,32 @@ import com.example.movieapplicationretrofitroommvvm.activities.DetailActivity;
 import com.example.movieapplicationretrofitroommvvm.adapters.FavoryAdapter;
 import com.example.movieapplicationretrofitroommvvm.model.Result;
 import com.example.movieapplicationretrofitroommvvm.repository.RepositoryMovie;
-import com.example.movieapplicationretrofitroommvvm.viewModels.MovieFavoriteFragmentViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FavoryFragment extends Fragment {
     private ArrayList<Result> displayFavory = new ArrayList<>();
     private RecyclerView recyclerView;
     private FavoryAdapter favoryAdapter;
-    private MovieFavoriteFragmentViewModel movieFavoriteFragmentViewModel;
-
+    private Result result;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Favoris: ");
-        movieFavoriteFragmentViewModel = new ViewModelProvider(this).get(MovieFavoriteFragmentViewModel.class);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RepositoryMovie.getInstance().getListFavorite().clear();
+        toGetFavList();
 
     }
 
@@ -60,8 +69,6 @@ public class FavoryFragment extends Fragment {
         setViewItem();
     }
 
-
-
     private void setViewItem(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         OnLinearClickedAction onLinearClickedAction = new OnLinearClickedAction() {
@@ -77,29 +84,64 @@ public class FavoryFragment extends Fragment {
         OnImgDeleteClickedAction onImgDeleteClickedAction = new OnImgDeleteClickedAction() {
             @Override
             public void deleteMovie(Result result) {
-                movieFavoriteFragmentViewModel.deleteMovieFavorite(result,getContext());
-
+                toDeleteMyMovies(result);
                 Toast.makeText(getContext(), "Supprimé", Toast.LENGTH_SHORT).show();
             }
+
         };
-
-        favoryAdapter = new FavoryAdapter(onLinearClickedAction, onImgDeleteClickedAction);
+        favoryAdapter = new FavoryAdapter(RepositoryMovie.getInstance().listFavorite, onLinearClickedAction, onImgDeleteClickedAction);
+        favoryAdapter.setListFavoryAdapter(RepositoryMovie.getInstance().listFavorite);
         recyclerView.setAdapter(favoryAdapter);
-
-
-        movieFavoriteFragmentViewModel.getFavoriteList(getContext()).observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
-            @Override
-            public void onChanged(List<Result> results) {
-                favoryAdapter.setListFavoryAdapter(new ArrayList<>(results));
-                if (results.size() == 0) {
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    EmptyFavoryListFragment llf = new EmptyFavoryListFragment();
-                    ft.replace(R.id.fragment_container, llf);
-                    ft.commit();
-                }
-                RepositoryMovie.getInstance().recipeAlreadyFavory = (ArrayList<Result>) results;
-            }
-        });
     }
+
+    private void toDeleteMyMovies(Result res){
+       db.collection("results").document(res.getDocumentId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        RepositoryMovie.getInstance().getListFavorite().clear();
+                        //toGetFavList();
+                        RepositoryMovie.getInstance().toGetFavList((Adapter) favoryAdapter);
+                        favoryAdapter.setListFavoryAdapter(RepositoryMovie.getInstance().listFavorite);
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+
+    }
+
+    public void toGetFavList(){
+        db.collection("results")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Result result = new Result();
+                                //c'est l'id tjrs type string de l'enregistrement firestore
+                                result.setDocumentId(document.getId());
+                                Log.d("rang",document.getId());
+                                //l'id de l'objet result int est dans le data
+                                result.setPoster_path((String) document.getData().get("poster_path"));
+                                result.setOverview((String) document.getData().get("overview"));
+                                result.setOriginal_title((String) document.getData().get("original_title"));
+                                RepositoryMovie.getInstance().listFavorite.add(result);
+                                Log.d("Liste", String.valueOf(RepositoryMovie.getInstance().listFavorite.size()));
+                            }
+                            Toast.makeText(getContext(), "size get listFav : "+RepositoryMovie.getInstance().listFavorite.size(), Toast.LENGTH_SHORT).show();
+                            favoryAdapter.setListFavoryAdapter(RepositoryMovie.getInstance().listFavorite);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
 }

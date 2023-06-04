@@ -13,6 +13,7 @@ import com.example.movieapplicationretrofitroommvvm.OnLinearClickedAction;
 import com.example.movieapplicationretrofitroommvvm.R;
 import com.example.movieapplicationretrofitroommvvm.model.Result;
 import com.example.movieapplicationretrofitroommvvm.viewHolders.FavoryViewHolder;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,13 @@ public class FavoryAdapter extends RecyclerView.Adapter<FavoryViewHolder> {
     private OnLinearClickedAction onLinearActionClicked;
     private OnImgDeleteClickedAction onImgDeleteClickedAction;
 
-    public FavoryAdapter(OnLinearClickedAction onLinearActionClicked, OnImgDeleteClickedAction onImgDeleteClickedAction) {
+   /* public FavoryAdapter(OnLinearClickedAction onLinearActionClicked, OnImgDeleteClickedAction onImgDeleteClickedAction) {
+        this.onLinearActionClicked = onLinearActionClicked;
+        this.onImgDeleteClickedAction = onImgDeleteClickedAction;
+    }*/
+
+    public FavoryAdapter(ArrayList<Result> listFavoryAdapter, OnLinearClickedAction onLinearActionClicked, OnImgDeleteClickedAction onImgDeleteClickedAction) {
+        this.listFavoryAdapter = listFavoryAdapter;
         this.onLinearActionClicked = onLinearActionClicked;
         this.onImgDeleteClickedAction = onImgDeleteClickedAction;
     }
@@ -30,6 +37,7 @@ public class FavoryAdapter extends RecyclerView.Adapter<FavoryViewHolder> {
         this.listFavoryAdapter = listFavoryAdapter;
         notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
