@@ -104,6 +104,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
               descFavory.setImageResource(R.drawable.ic_star_full);
                 addMovieToFirabase();
+
                 //refreshFavoriteList();
 
             }
@@ -231,13 +232,20 @@ public class DetailActivity extends AppCompatActivity {
         favoryMovie = new HashMap<>();
         favoryMovie.put(RepositoryMovie.getInstance().getListMovie(), result);
         // Add a new document with a generated ID
+        result.setFavorite(true);
         db.collection("results")
                 .add(result)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         //Log.d("resultat",documentReference.getId());
+                        //result.setFavorite(true);
+                        if(result.isFavorite()==true){
+                            descFavory.setImageResource(R.drawable.ic_star_full);
+                        }
+
                     }
+
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

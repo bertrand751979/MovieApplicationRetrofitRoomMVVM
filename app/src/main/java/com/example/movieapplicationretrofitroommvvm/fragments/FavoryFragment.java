@@ -100,9 +100,10 @@ public class FavoryFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        RepositoryMovie.getInstance().getListFavorite().clear();
-                        //toGetFavList();
-                        RepositoryMovie.getInstance().toGetFavList((Adapter) favoryAdapter);
+                        RepositoryMovie.getInstance().listFavorite.remove(res);
+                        //RepositoryMovie.getInstance().getListFavorite().clear();
+  //                      toGetFavList();
+ //                       RepositoryMovie.getInstance().toGetFavList((Adapter) favoryAdapter);
                         favoryAdapter.setListFavoryAdapter(RepositoryMovie.getInstance().listFavorite);
                         Log.d(TAG, "DocumentSnapshot successfully deleted!");
                     }
